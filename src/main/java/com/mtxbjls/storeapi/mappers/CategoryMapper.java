@@ -21,4 +21,10 @@ public class CategoryMapper {
                 .image(category.getImage())
                 .build();
     }
+
+    public static Category updateCategory(Category category, RequestCategoryDTO requestCategoryDTO) {
+        category.setName(requestCategoryDTO.getName() == null ? category.getName() : requestCategoryDTO.getName());
+        category.setImage(requestCategoryDTO.getImage() == null ? category.getImage() : requestCategoryDTO.getImage());
+        return category;
+    }
 }

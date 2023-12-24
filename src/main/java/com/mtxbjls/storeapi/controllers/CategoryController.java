@@ -33,4 +33,10 @@ public class CategoryController {
     public ResponseCategoryDTO getCategoryById(@PathVariable Long id){
         return categoryService.getCategoryById(id);
     }
+
+    @PatchMapping(Constants.PathVariables.ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseCategoryDTO updateCategory(@PathVariable Long id, @RequestBody RequestCategoryDTO requestCategoryDTO){
+        return categoryService.updateCategory(id, requestCategoryDTO);
+    }
 }

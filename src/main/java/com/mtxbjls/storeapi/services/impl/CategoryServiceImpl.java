@@ -55,4 +55,15 @@ public class CategoryServiceImpl implements ICategoryService {
         return CategoryMapper.mapToResponseCategoryDTO(category.get());
     }
 
+    @Override
+    public ResponseCategoryDTO updateCategory(Long id, RequestCategoryDTO requestCategoryDTO) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if(category.isEmpty()) {
+            throw new RuntimeException("Category not found");
+        }
+        Category updatedCategory = CategoryMapper.updateCategory(category.get(), requestCategoryDTO);
+
+        return CategoryMapper.mapToResponseCategoryDTO(categoryRepository.save(updatedCategory));
+    }
+
 }
