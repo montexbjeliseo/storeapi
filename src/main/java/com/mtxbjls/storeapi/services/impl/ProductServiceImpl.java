@@ -61,4 +61,13 @@ public class ProductServiceImpl implements IProductService {
         return products.stream().map(ProductMapper::mapToResponseProductDTO).toList();
     }
 
+    @Override
+    public ResponseProductDTO getProductById(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            throw new RuntimeException("Product not found");
+        }
+        return ProductMapper.mapToResponseProductDTO(product.get());
+    }
+
 }
