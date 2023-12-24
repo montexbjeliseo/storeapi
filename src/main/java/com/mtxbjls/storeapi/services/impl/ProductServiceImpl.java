@@ -2,6 +2,7 @@ package com.mtxbjls.storeapi.services.impl;
 
 import com.mtxbjls.storeapi.dtos.RequestProductDTO;
 import com.mtxbjls.storeapi.dtos.ResponseProductDTO;
+import com.mtxbjls.storeapi.exceptions.MandatoryFieldException;
 import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.mappers.ProductMapper;
 import com.mtxbjls.storeapi.models.Category;
@@ -26,23 +27,23 @@ public class ProductServiceImpl implements IProductService {
     public ResponseProductDTO createProduct(RequestProductDTO requestProductDTO) {
 
         if(requestProductDTO.getTitle() == null || requestProductDTO.getTitle().isEmpty()){
-            throw new RuntimeException("Title cannot be null or empty");
+            throw new MandatoryFieldException("Title cannot be null or empty");
         }
 
         if(requestProductDTO.getDescription() == null || requestProductDTO.getDescription().isEmpty()){
-            throw new RuntimeException("Description cannot be null or empty");
+            throw new MandatoryFieldException("Description cannot be null or empty");
         }
 
         if(requestProductDTO.getPrice() == null){
-            throw new RuntimeException("Price cannot be null");
+            throw new MandatoryFieldException("Price cannot be null");
         }
 
         if(requestProductDTO.getCategory_id() == null){
-            throw new RuntimeException("Category cannot be null");
+            throw new MandatoryFieldException("Category cannot be null");
         }
 
         if(requestProductDTO.getImages() == null || requestProductDTO.getImages().length == 0){
-            throw new RuntimeException("Images cannot be null or empty");
+            throw new MandatoryFieldException("Images cannot be null or empty");
         }
 
         Optional<Category> category = categoryRepository.findById(requestProductDTO.getCategory_id());

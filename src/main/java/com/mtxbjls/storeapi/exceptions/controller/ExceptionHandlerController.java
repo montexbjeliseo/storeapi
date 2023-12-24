@@ -1,5 +1,6 @@
 package com.mtxbjls.storeapi.exceptions.controller;
 
+import com.mtxbjls.storeapi.exceptions.MandatoryFieldException;
 import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.exceptions.dto.ExceptionDTO;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,17 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 request.getDescription(false));
 
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({MandatoryFieldException.class})
+    protected ResponseEntity<?> handleException(MandatoryFieldException ex,
+                                                WebRequest request) {
+        ExceptionDTO message = new ExceptionDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }

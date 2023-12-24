@@ -2,6 +2,7 @@ package com.mtxbjls.storeapi.services.impl;
 
 import com.mtxbjls.storeapi.dtos.RequestCategoryDTO;
 import com.mtxbjls.storeapi.dtos.ResponseCategoryDTO;
+import com.mtxbjls.storeapi.exceptions.MandatoryFieldException;
 import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.mappers.CategoryMapper;
 import com.mtxbjls.storeapi.models.Category;
@@ -25,11 +26,11 @@ public class CategoryServiceImpl implements ICategoryService {
 
 
         if (requestCategoryDTO.getName() == null || requestCategoryDTO.getName().isBlank()) {
-            throw new RuntimeException("Name is required");
+            throw new MandatoryFieldException("Name is required");
         }
 
-        if (requestCategoryDTO.getImage().isBlank()) {
-            throw new RuntimeException("Image is required");
+        if (requestCategoryDTO.getImage() == null || requestCategoryDTO.getImage().isBlank()) {
+            throw new MandatoryFieldException("Image is required");
         }
 
         if (categoryRepository.existsByName(requestCategoryDTO.getName())) {
