@@ -11,6 +11,7 @@ import com.mtxbjls.storeapi.services.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,6 +53,12 @@ public class ProductServiceImpl implements IProductService {
         product.setCategory(category.get());
         Product savedProduct = productRepository.save(product);
         return ProductMapper.mapToResponseProductDTO(savedProduct);
+    }
+
+    @Override
+    public List<ResponseProductDTO> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream().map(ProductMapper::mapToResponseProductDTO).toList();
     }
 
 }
