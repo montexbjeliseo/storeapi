@@ -10,6 +10,7 @@ import com.mtxbjls.storeapi.repositories.ProductRepository;
 import com.mtxbjls.storeapi.services.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -90,6 +91,17 @@ public class ProductServiceImpl implements IProductService {
             updatedProduct.setCategory(category.get());
         }
         return ProductMapper.mapToResponseProductDTO(productRepository.save(updatedProduct));
+    }
+
+    @Override
+    @Transactional
+    public ResponseProductDTO deleteProduct(Long id) {
+        Product product = productRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        ResponseProductDTO responseProductDTO = ProductMapper.mapToResponseProductDTO(product);
+        productRepository.deleteById(id);
+        return responseProductDTO;
     }
 
 }

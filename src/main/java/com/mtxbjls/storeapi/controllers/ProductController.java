@@ -40,4 +40,10 @@ public class ProductController {
     public ResponseProductDTO updateProduct(@PathVariable Long id, @RequestBody RequestProductDTO requestProductDTO) {
         return productService.updateProduct(id, requestProductDTO);
     }
+
+    @DeleteMapping(Constants.PathVariables.ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseProductDTO deleteProduct(@PathVariable Long id) {
+        return productService.deleteProduct(id);
+    }
 }

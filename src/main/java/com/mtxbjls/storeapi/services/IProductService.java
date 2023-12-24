@@ -10,4 +10,5 @@ public interface IProductService {
     public List<ResponseProductDTO> getAllProducts();
     public ResponseProductDTO getProductById(Long id);
     public ResponseProductDTO updateProduct(Long id, RequestProductDTO requestProductDTO);
+    public ResponseProductDTO deleteProduct(Long id);
 }
