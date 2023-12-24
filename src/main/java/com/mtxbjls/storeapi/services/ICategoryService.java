@@ -9,4 +9,6 @@ import java.util.List;
 public interface ICategoryService {
     public ResponseCategoryDTO createCategory(RequestCategoryDTO requestCategoryDTO);
     public List<ResponseCategoryDTO> getAllCategories();
+
+    public ResponseCategoryDTO getCategoryById(Long id);
 }

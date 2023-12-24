@@ -27,4 +27,10 @@ public class CategoryController {
     public List<ResponseCategoryDTO> getCategories(){
         return categoryService.getAllCategories();
     }
+
+    @GetMapping(Constants.PathVariables.ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseCategoryDTO getCategoryById(@PathVariable Long id){
+        return categoryService.getCategoryById(id);
+    }
 }

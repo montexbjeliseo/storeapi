@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +44,15 @@ public class CategoryServiceImpl implements ICategoryService {
     public List<ResponseCategoryDTO> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
         return categories.stream().map(CategoryMapper::mapToResponseCategoryDTO).toList();
+    }
+
+    @Override
+    public ResponseCategoryDTO getCategoryById(Long id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        if(category.isEmpty()) {
+            throw new RuntimeException("Category not found");
+        }
+        return CategoryMapper.mapToResponseCategoryDTO(category.get());
     }
 
 }

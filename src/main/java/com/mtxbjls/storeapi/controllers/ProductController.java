@@ -29,7 +29,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(Constants.PathVariables.ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseProductDTO getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
