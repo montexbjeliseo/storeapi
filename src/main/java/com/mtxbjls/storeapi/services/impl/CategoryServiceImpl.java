@@ -4,6 +4,7 @@ import com.mtxbjls.storeapi.dtos.RequestCategoryDTO;
 import com.mtxbjls.storeapi.dtos.ResponseCategoryDTO;
 import com.mtxbjls.storeapi.exceptions.MandatoryFieldException;
 import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
+import com.mtxbjls.storeapi.exceptions.UniqueConstraintViolationException;
 import com.mtxbjls.storeapi.mappers.CategoryMapper;
 import com.mtxbjls.storeapi.models.Category;
 import com.mtxbjls.storeapi.repositories.CategoryRepository;
@@ -34,7 +35,7 @@ public class CategoryServiceImpl implements ICategoryService {
         }
 
         if (categoryRepository.existsByName(requestCategoryDTO.getName())) {
-            throw new RuntimeException("Category already exists");
+            throw new UniqueConstraintViolationException("Category already exists");
         }
 
         Category category = CategoryMapper.mapToCategory(requestCategoryDTO);
@@ -64,6 +65,13 @@ public class CategoryServiceImpl implements ICategoryService {
         if(category.isEmpty()) {
             throw new ResourceNotFoundException("Category not found");
         }
+
+        if(requestCategoryDTO.getName() != null
+                && !requestCategoryDTO.getName().isBlank()
+                && categoryRepository.existsByName(requestCategoryDTO.getName())) {
+            throw new UniqueConstraintViolationException("Category name is already in use. Please choose another one or update the image url");
+        }
+
         Category updatedCategory = CategoryMapper.updateCategory(category.get(), requestCategoryDTO);
 
         return CategoryMapper.mapToResponseCategoryDTO(categoryRepository.save(updatedCategory));
