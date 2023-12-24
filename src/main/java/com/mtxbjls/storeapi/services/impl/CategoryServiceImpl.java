@@ -2,6 +2,7 @@ package com.mtxbjls.storeapi.services.impl;
 
 import com.mtxbjls.storeapi.dtos.RequestCategoryDTO;
 import com.mtxbjls.storeapi.dtos.ResponseCategoryDTO;
+import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.mappers.CategoryMapper;
 import com.mtxbjls.storeapi.models.Category;
 import com.mtxbjls.storeapi.repositories.CategoryRepository;
@@ -51,7 +52,7 @@ public class CategoryServiceImpl implements ICategoryService {
     public ResponseCategoryDTO getCategoryById(Long id) {
         Optional<Category> category = categoryRepository.findById(id);
         if(category.isEmpty()) {
-            throw new RuntimeException("Category not found");
+            throw new ResourceNotFoundException("Category not found");
         }
         return CategoryMapper.mapToResponseCategoryDTO(category.get());
     }
@@ -60,7 +61,7 @@ public class CategoryServiceImpl implements ICategoryService {
     public ResponseCategoryDTO updateCategory(Long id, RequestCategoryDTO requestCategoryDTO) {
         Optional<Category> category = categoryRepository.findById(id);
         if(category.isEmpty()) {
-            throw new RuntimeException("Category not found");
+            throw new ResourceNotFoundException("Category not found");
         }
         Category updatedCategory = CategoryMapper.updateCategory(category.get(), requestCategoryDTO);
 
@@ -72,7 +73,7 @@ public class CategoryServiceImpl implements ICategoryService {
     public ResponseCategoryDTO deleteCategory(Long id) {
         Category category = categoryRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         ResponseCategoryDTO responseCategoryDTO = CategoryMapper.mapToResponseCategoryDTO(category);
         categoryRepository.delete(category);
         return responseCategoryDTO;

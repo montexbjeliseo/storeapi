@@ -2,6 +2,7 @@ package com.mtxbjls.storeapi.services.impl;
 
 import com.mtxbjls.storeapi.dtos.RequestProductDTO;
 import com.mtxbjls.storeapi.dtos.ResponseProductDTO;
+import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.mappers.ProductMapper;
 import com.mtxbjls.storeapi.models.Category;
 import com.mtxbjls.storeapi.models.Product;
@@ -47,7 +48,7 @@ public class ProductServiceImpl implements IProductService {
         Optional<Category> category = categoryRepository.findById(requestProductDTO.getCategory_id());
 
         if(category.isEmpty()){
-            throw new RuntimeException("Category not found");
+            throw new ResourceNotFoundException("Category not found");
         }
 
         Product product = ProductMapper.mapToProduct(requestProductDTO);
@@ -66,7 +67,7 @@ public class ProductServiceImpl implements IProductService {
     public ResponseProductDTO getProductById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
-            throw new RuntimeException("Product not found");
+            throw new ResourceNotFoundException("Product not found");
         }
         return ProductMapper.mapToResponseProductDTO(product.get());
     }
@@ -75,7 +76,7 @@ public class ProductServiceImpl implements IProductService {
     public ResponseProductDTO updateProduct(Long id, RequestProductDTO requestProductDTO) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
-            throw new RuntimeException("Product not found");
+            throw new ResourceNotFoundException("Product not found");
         }
 
         if(requestProductDTO == null){
@@ -86,7 +87,7 @@ public class ProductServiceImpl implements IProductService {
         if(requestProductDTO.getCategory_id() != null){
             Optional<Category> category = categoryRepository.findById(requestProductDTO.getCategory_id());
             if(category.isEmpty()){
-                throw new RuntimeException("Category not found");
+                throw new ResourceNotFoundException("Category not found");
             }
             updatedProduct.setCategory(category.get());
         }
@@ -98,7 +99,7 @@ public class ProductServiceImpl implements IProductService {
     public ResponseProductDTO deleteProduct(Long id) {
         Product product = productRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         ResponseProductDTO responseProductDTO = ProductMapper.mapToResponseProductDTO(product);
         productRepository.deleteById(id);
         return responseProductDTO;
