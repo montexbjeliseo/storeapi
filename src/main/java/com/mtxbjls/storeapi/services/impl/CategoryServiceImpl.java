@@ -2,6 +2,7 @@ package com.mtxbjls.storeapi.services.impl;
 
 import com.mtxbjls.storeapi.dtos.RequestCategoryDTO;
 import com.mtxbjls.storeapi.dtos.ResponseCategoryDTO;
+import com.mtxbjls.storeapi.mappers.CategoryMapper;
 import com.mtxbjls.storeapi.models.Category;
 import com.mtxbjls.storeapi.repositories.CategoryRepository;
 import com.mtxbjls.storeapi.services.ICategoryService;
@@ -32,28 +33,16 @@ public class CategoryServiceImpl implements ICategoryService {
             throw new RuntimeException("Category already exists");
         }
 
-        Category category = Category
-                .builder()
-                .name(requestCategoryDTO.getName())
-                .image(requestCategoryDTO.getImage())
-                .build();
+        Category category = CategoryMapper.mapToCategory(requestCategoryDTO);
         Category savedCategory = categoryRepository.save(category);
 
-        return mapToResponseCategoryDTO(savedCategory);
+        return CategoryMapper.mapToResponseCategoryDTO(savedCategory);
     }
 
     @Override
     public List<ResponseCategoryDTO> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
-        return categories.stream().map(this::mapToResponseCategoryDTO).toList();
+        return categories.stream().map(CategoryMapper::mapToResponseCategoryDTO).toList();
     }
 
-    public ResponseCategoryDTO mapToResponseCategoryDTO(Category category) {
-        return ResponseCategoryDTO
-                .builder()
-                .id(category.getId())
-                .name(category.getName())
-                .image(category.getImage())
-                .build();
-    }
 }
