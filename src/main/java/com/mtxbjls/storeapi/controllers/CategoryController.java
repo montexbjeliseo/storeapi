@@ -39,4 +39,10 @@ public class CategoryController {
     public ResponseCategoryDTO updateCategory(@PathVariable Long id, @RequestBody RequestCategoryDTO requestCategoryDTO){
         return categoryService.updateCategory(id, requestCategoryDTO);
     }
+
+    @DeleteMapping(Constants.PathVariables.ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseCategoryDTO deleteCategory(@PathVariable Long id){
+        return categoryService.deleteCategory(id);
+    }
 }

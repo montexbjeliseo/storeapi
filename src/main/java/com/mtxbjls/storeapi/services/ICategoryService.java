@@ -11,4 +11,5 @@ public interface ICategoryService {
     public List<ResponseCategoryDTO> getAllCategories();
     public ResponseCategoryDTO getCategoryById(Long id);
     public ResponseCategoryDTO updateCategory(Long id, RequestCategoryDTO requestCategoryDTO);
+    public ResponseCategoryDTO deleteCategory(Long id);
 }

@@ -8,6 +8,7 @@ import com.mtxbjls.storeapi.repositories.CategoryRepository;
 import com.mtxbjls.storeapi.services.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,5 +66,17 @@ public class CategoryServiceImpl implements ICategoryService {
 
         return CategoryMapper.mapToResponseCategoryDTO(categoryRepository.save(updatedCategory));
     }
+
+    @Override
+    @Transactional
+    public ResponseCategoryDTO deleteCategory(Long id) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        ResponseCategoryDTO responseCategoryDTO = CategoryMapper.mapToResponseCategoryDTO(category);
+        categoryRepository.delete(category);
+        return responseCategoryDTO;
+    }
+
 
 }
