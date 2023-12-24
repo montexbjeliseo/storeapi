@@ -29,4 +29,14 @@ public class ProductMapper {
                 .images(product.getImages().toArray(new String[0]))
                 .build();
     }
+
+    public static Product updateProduct(Product product, RequestProductDTO requestProductDTO){
+        product.setTitle(requestProductDTO.getTitle() == null ? product.getTitle() : requestProductDTO.getTitle());
+        product.setDescription(requestProductDTO.getDescription() == null ? product.getDescription() : requestProductDTO.getDescription());
+        product.setPrice(requestProductDTO.getPrice() == null ? product.getPrice() : requestProductDTO.getPrice());
+        product.setImages(requestProductDTO.getImages() != null && requestProductDTO.getImages().length > 0
+                ? List.of(requestProductDTO.getImages())
+                : product.getImages());
+        return product;
+    }
 }

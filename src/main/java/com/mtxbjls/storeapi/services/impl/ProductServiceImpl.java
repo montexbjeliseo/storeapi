@@ -70,4 +70,26 @@ public class ProductServiceImpl implements IProductService {
         return ProductMapper.mapToResponseProductDTO(product.get());
     }
 
+    @Override
+    public ResponseProductDTO updateProduct(Long id, RequestProductDTO requestProductDTO) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            throw new RuntimeException("Product not found");
+        }
+
+        if(requestProductDTO == null){
+            throw new RuntimeException("No data provided");
+        }
+
+        Product updatedProduct = ProductMapper.updateProduct(product.get(), requestProductDTO);
+        if(requestProductDTO.getCategory_id() != null){
+            Optional<Category> category = categoryRepository.findById(requestProductDTO.getCategory_id());
+            if(category.isEmpty()){
+                throw new RuntimeException("Category not found");
+            }
+            updatedProduct.setCategory(category.get());
+        }
+        return ProductMapper.mapToResponseProductDTO(productRepository.save(updatedProduct));
+    }
+
 }
