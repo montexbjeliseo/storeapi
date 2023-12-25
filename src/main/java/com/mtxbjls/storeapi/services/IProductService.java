@@ -11,4 +11,6 @@ public interface IProductService {
     public ResponseProductDTO getProductById(Long id);
     public ResponseProductDTO updateProduct(Long id, RequestProductDTO requestProductDTO);
     public ResponseProductDTO deleteProduct(Long id);
+
+    public List<ResponseProductDTO> getFilteredProducts(String title, Long category_id, Double price_min, Double price_max);
 }

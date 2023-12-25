@@ -25,8 +25,17 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ResponseProductDTO> getAllProducts() {
-        return productService.getAllProducts();
+    public List<ResponseProductDTO> getAllProducts(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Long category_id,
+            @RequestParam(required = false) Double price_min,
+            @RequestParam(required = false) Double price_max
+    ) {
+        if (title != null || category_id != null || price_min != null && price_max != null) {
+            return productService.getFilteredProducts(title, category_id, price_min, price_max);
+        } else {
+            return productService.getAllProducts();
+        }
     }
 
     @GetMapping(Constants.PathVariables.ID)

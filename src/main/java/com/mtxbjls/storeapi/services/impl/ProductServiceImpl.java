@@ -106,4 +106,10 @@ public class ProductServiceImpl implements IProductService {
         return responseProductDTO;
     }
 
+    @Override
+    public List<ResponseProductDTO> getFilteredProducts(String title, Long category_id, Double price_min, Double price_max) {
+        return productRepository.filterProducts(title, category_id, price_min, price_max)
+                .stream().map(ProductMapper::mapToResponseProductDTO).toList();
+    }
+
 }
