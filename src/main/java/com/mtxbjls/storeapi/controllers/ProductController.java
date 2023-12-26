@@ -29,12 +29,14 @@ public class ProductController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Long category_id,
             @RequestParam(required = false) Double price_min,
-            @RequestParam(required = false) Double price_max
+            @RequestParam(required = false) Double price_max,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "100") int limit
     ) {
         if (title != null || category_id != null || price_min != null && price_max != null) {
-            return productService.getFilteredProducts(title, category_id, price_min, price_max);
+            return productService.getFilteredProducts(title, category_id, price_min, price_max, offset, limit);
         } else {
-            return productService.getAllProducts();
+            return productService.getAllProducts(offset, limit);
         }
     }
 

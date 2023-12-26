@@ -11,6 +11,9 @@ import com.mtxbjls.storeapi.repositories.CategoryRepository;
 import com.mtxbjls.storeapi.repositories.ProductRepository;
 import com.mtxbjls.storeapi.services.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,32 +26,33 @@ public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+
     @Override
     public ResponseProductDTO createProduct(RequestProductDTO requestProductDTO) {
 
-        if(requestProductDTO.getTitle() == null || requestProductDTO.getTitle().isEmpty()){
+        if (requestProductDTO.getTitle() == null || requestProductDTO.getTitle().isEmpty()) {
             throw new MandatoryFieldException("Title cannot be null or empty");
         }
 
-        if(requestProductDTO.getDescription() == null || requestProductDTO.getDescription().isEmpty()){
+        if (requestProductDTO.getDescription() == null || requestProductDTO.getDescription().isEmpty()) {
             throw new MandatoryFieldException("Description cannot be null or empty");
         }
 
-        if(requestProductDTO.getPrice() == null){
+        if (requestProductDTO.getPrice() == null) {
             throw new MandatoryFieldException("Price cannot be null");
         }
 
-        if(requestProductDTO.getCategory_id() == null){
+        if (requestProductDTO.getCategory_id() == null) {
             throw new MandatoryFieldException("Category cannot be null");
         }
 
-        if(requestProductDTO.getImages() == null || requestProductDTO.getImages().length == 0){
+        if (requestProductDTO.getImages() == null || requestProductDTO.getImages().length == 0) {
             throw new MandatoryFieldException("Images cannot be null or empty");
         }
 
         Optional<Category> category = categoryRepository.findById(requestProductDTO.getCategory_id());
 
-        if(category.isEmpty()){
+        if (category.isEmpty()) {
             throw new ResourceNotFoundException("Category not found");
         }
 
@@ -59,9 +63,10 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ResponseProductDTO> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream().map(ProductMapper::mapToResponseProductDTO).toList();
+    public List<ResponseProductDTO> getAllProducts(int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Page<Product> products = productRepository.findAll(pageable);
+        return products.map(ProductMapper::mapToResponseProductDTO).toList();
     }
 
     @Override
@@ -80,14 +85,14 @@ public class ProductServiceImpl implements IProductService {
             throw new ResourceNotFoundException("Product not found");
         }
 
-        if(requestProductDTO == null){
+        if (requestProductDTO == null) {
             throw new RuntimeException("No data provided");
         }
 
         Product updatedProduct = ProductMapper.updateProduct(product.get(), requestProductDTO);
-        if(requestProductDTO.getCategory_id() != null){
+        if (requestProductDTO.getCategory_id() != null) {
             Optional<Category> category = categoryRepository.findById(requestProductDTO.getCategory_id());
-            if(category.isEmpty()){
+            if (category.isEmpty()) {
                 throw new ResourceNotFoundException("Category not found");
             }
             updatedProduct.setCategory(category.get());
@@ -107,9 +112,16 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ResponseProductDTO> getFilteredProducts(String title, Long category_id, Double price_min, Double price_max) {
-        return productRepository.filterProducts(title, category_id, price_min, price_max)
-                .stream().map(ProductMapper::mapToResponseProductDTO).toList();
+    public List<ResponseProductDTO> getFilteredProducts(
+            String title,
+            Long category_id,
+            Double price_min,
+            Double price_max,
+            int offset,
+            int limit) {
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Page<Product> products = productRepository.filterProducts(title, category_id, price_min, price_max, pageable);
+        return products.map(ProductMapper::mapToResponseProductDTO).toList();
     }
 
 }
