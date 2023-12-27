@@ -8,6 +8,7 @@ import com.mtxbjls.storeapi.utils.Constants.Endpoints;
 import com.mtxbjls.storeapi.utils.Constants.PathVariables;
 import com.mtxbjls.storeapi.utils.Constants.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -87,5 +88,17 @@ public class WebSecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
 
+    }
+    
+    @Bean
+    @Value("${admin.email}")
+    public String adminEmail(String email){
+        return email;
+    }
+    
+    @Bean
+    @Value("${admin.password}")
+    public String adminPassword(String password){
+        return password;
     }
 }

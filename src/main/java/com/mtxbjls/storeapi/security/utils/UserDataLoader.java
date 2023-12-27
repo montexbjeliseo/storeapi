@@ -2,30 +2,24 @@ package com.mtxbjls.storeapi.security.utils;
 
 import com.mtxbjls.storeapi.security.dtos.RequestUserDTO;
 import com.mtxbjls.storeapi.security.models.Role;
-import com.mtxbjls.storeapi.security.models.User;
 import com.mtxbjls.storeapi.security.repositories.RoleRepository;
-import com.mtxbjls.storeapi.security.repositories.UserRepository;
 import com.mtxbjls.storeapi.security.services.IUserService;
 import com.mtxbjls.storeapi.utils.Constants;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class UserDataLoader implements CommandLineRunner {
-
+public class UserDataLoader implements CommandLineRunner { 
+    
     private final RoleRepository roleRepository;
     private final IUserService userService;
+    
+    private final String adminEmail;
+    private final String adminPassword;
 
     @Override
     public void run(String... args) throws Exception {
@@ -49,15 +43,26 @@ public class UserDataLoader implements CommandLineRunner {
     }
     private void loadDefaultUsers() {
         try {
+            
+            if(adminEmail == null || adminEmail.isBlank()){
+                log.warn("admin.email is not defined");
+                return;
+            }
+            if(adminPassword == null || adminPassword.isBlank()){
+                log.warn("admin.password is not defined");
+                return;
+            }
+            
             RequestUserDTO requestUserDTO = new RequestUserDTO();
-            requestUserDTO.setPassword("admin");
+            requestUserDTO.setPassword(adminPassword);
             requestUserDTO.setFirstName("Admin");
             requestUserDTO.setLastName("Admin");
-            requestUserDTO.setEmail("nq5oM@example.com");
+            requestUserDTO.setEmail(adminEmail);
             userService.registerUser(requestUserDTO, Constants.Roles.ADMIN);
             log.info("DATA LOADER: Users loaded");
         } catch (Exception e) {
             log.error("DATA LOADER: Error loading users, message: " + e.getMessage());
         }
     }
+    
 }
