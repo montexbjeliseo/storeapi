@@ -17,4 +17,11 @@ public class Constants {
         public static final String UPLOAD_DIR = "./uploads";
 
     }
+
+    public abstract static class Roles {
+        public static final String CUSTOMER = "CUSTOMER";
+        public static final String CUSTOMER_DESCRIPTION = "Costumer";
+        public static final String ADMIN = "ADMIN";
+        public static final String ADMIN_DESCRIPTION = "Admin";
+    }
 }
