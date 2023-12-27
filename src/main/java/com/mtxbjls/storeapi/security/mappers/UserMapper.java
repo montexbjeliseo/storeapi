@@ -10,7 +10,6 @@ public class UserMapper {
         return ResponseUserDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .roles(user.getRoles().stream().map(Role::getName).toArray(String[]::new))
@@ -19,7 +18,6 @@ public class UserMapper {
 
     public static User mapToUser(RequestUserDTO requestUserDTO) {
         return User.builder()
-                .username(requestUserDTO.getUsername())
                 .password("")
                 .firstName(requestUserDTO.getFirstName())
                 .lastName(requestUserDTO.getLastName())

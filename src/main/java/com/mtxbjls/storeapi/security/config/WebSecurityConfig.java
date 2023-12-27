@@ -4,9 +4,13 @@ import com.mtxbjls.storeapi.exceptions.CustomAccessDeniedHandler;
 import com.mtxbjls.storeapi.exceptions.CustomAuthenticationEntryPoint;
 import com.mtxbjls.storeapi.security.filters.JwtTokenRequestFilter;
 import com.mtxbjls.storeapi.security.services.impl.CustomUserDetailsService;
+import com.mtxbjls.storeapi.utils.Constants.Endpoints;
+import com.mtxbjls.storeapi.utils.Constants.PathVariables;
+import com.mtxbjls.storeapi.utils.Constants.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -42,7 +46,22 @@ public class WebSecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(requests
-                        -> requests.requestMatchers("/api/v1/auth/**").permitAll()
+                        -> requests.requestMatchers(Endpoints.AUTH + "/**").permitAll()
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                Endpoints.CATEGORIES,
+                                Endpoints.PRODUCTS,
+                                Endpoints.FILES + PathVariables.FILENAME).permitAll()
+                        .requestMatchers(
+                                HttpMethod.POST, 
+                                Endpoints.CATEGORIES, Endpoints.PRODUCTS, Endpoints.FILES + Endpoints.UPLOAD).hasAuthority(Roles.ADMIN)
+                        .requestMatchers(
+                                HttpMethod.PATCH, 
+                                Endpoints.CATEGORIES, Endpoints.PRODUCTS).hasAuthority(Roles.ADMIN)
+                        .requestMatchers(
+                                HttpMethod.DELETE, 
+                                Endpoints.CATEGORIES, Endpoints.PRODUCTS).hasAuthority(Roles.ADMIN)
+        
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -1,6 +1,7 @@
 package com.mtxbjls.storeapi.services.impl;
 
 import com.mtxbjls.storeapi.exceptions.MandatoryFieldException;
+import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.services.IFileUploadService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,11 @@ public class FileUploadServiceImpl implements IFileUploadService {
 
     @Override
     public Path getFilePath(String fileName) {
-        return Paths.get(UPLOAD_DIR).resolve(fileName);
+        try {
+            Path path = Paths.get(UPLOAD_DIR).resolve(fileName);
+            return path;
+        } catch(Exception ex){
+            throw new ResourceNotFoundException("File not found");
+        }
     }
 }

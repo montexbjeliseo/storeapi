@@ -50,7 +50,6 @@ public class UserDataLoader implements CommandLineRunner {
     private void loadDefaultUsers() {
         try {
             RequestUserDTO requestUserDTO = new RequestUserDTO();
-            requestUserDTO.setUsername("admin");
             requestUserDTO.setPassword("admin");
             requestUserDTO.setFirstName("Admin");
             requestUserDTO.setLastName("Admin");

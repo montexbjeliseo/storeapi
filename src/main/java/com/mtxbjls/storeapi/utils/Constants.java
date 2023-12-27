@@ -6,6 +6,11 @@ public class Constants {
         public static final String PRODUCTS = "/api/v1/products";
         public static final String FILES = "/api/v1/files";
         public static final String UPLOAD = "/upload";
+        
+        public static final String AUTH = "/api/v1/auth";        
+        public static final String REGISTER = "/register";
+        public static final String LOGIN = "/login";
+
     }
 
     public abstract static class PathVariables {

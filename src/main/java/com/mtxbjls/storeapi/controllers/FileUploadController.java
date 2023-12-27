@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Path;
 
 @RestController
@@ -31,15 +30,13 @@ public class FileUploadController {
     }
 
     @GetMapping(Constants.PathVariables.FILENAME)
-    public ResponseEntity<Resource> getFile(@PathVariable("fileName") String fileName) {
+    public ResponseEntity<Resource> getFile(@PathVariable("fileName") String fileName) throws IOException {
         Path filePath = fileUploadService.getFilePath(fileName);
         Resource resource;
-
-        try {
-            resource = new UrlResource(filePath.toUri());
-        } catch (MalformedURLException e) {
+        if (!filePath.toFile().exists()) {
             throw new ResourceNotFoundException("File not found");
         }
+        resource = new UrlResource(filePath.toUri());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")

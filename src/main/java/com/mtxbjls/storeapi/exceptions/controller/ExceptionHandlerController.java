@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Date;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
@@ -102,5 +103,4 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
     }
-    
 }

@@ -42,9 +42,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional
     public ResponseUserDTO registerUser(RequestUserDTO requestUserDTO) {
-        if (userRepository.existsByUsername(requestUserDTO.getUsername())) {
-            throw new UniqueConstraintViolationException("Error: Username is already taken!");
-        }
         if (userRepository.existsByEmail(requestUserDTO.getEmail())) {
             throw new UniqueConstraintViolationException("Error: Email is already in use!");
         }
@@ -53,8 +50,8 @@ public class UserServiceImpl implements IUserService {
 
     @Transactional
     public ResponseUserDTO registerUser(RequestUserDTO requestUserDTO, String role) {
-        if (userRepository.existsByUsername(requestUserDTO.getUsername())) {
-            throw new UniqueConstraintViolationException("Error: Username is already taken!");
+        if (userRepository.existsByEmail(requestUserDTO.getEmail())) {
+            throw new UniqueConstraintViolationException("Error: Email is already in use!");
         }
         User user = UserMapper.mapToUser(requestUserDTO);
         user.setPassword(passwordEncoder.encode(requestUserDTO.getPassword()));
@@ -69,8 +66,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResponseLoginDTO loginUser(RequestLoginDTO requestLoginDTO) {
-        if (!userRepository.existsByUsername(requestLoginDTO.getEmail())) {
-            log.info("Estoy aquí");
+        if (!userRepository.existsByEmail(requestLoginDTO.getEmail())) {
             throw new UsernameNotFoundException("User not found");
         }
 
