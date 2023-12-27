@@ -8,19 +8,21 @@ import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.ServletException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.IOException;
 import java.util.Date;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler({ResourceNotFoundException.class})
     protected ResponseEntity<?> handleException(ResourceNotFoundException ex,
-                                                WebRequest request) {
+            WebRequest request) {
         ExceptionDTO message = new ExceptionDTO(
                 HttpStatus.NOT_FOUND.value(),
                 new Date(),
@@ -32,7 +34,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({MandatoryFieldException.class})
     protected ResponseEntity<?> handleException(MandatoryFieldException ex,
-                                                WebRequest request) {
+            WebRequest request) {
         ExceptionDTO message = new ExceptionDTO(
                 HttpStatus.BAD_REQUEST.value(),
                 new Date(),
@@ -44,7 +46,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({UniqueConstraintViolationException.class})
     protected ResponseEntity<?> handleException(UniqueConstraintViolationException ex,
-                                                WebRequest request) {
+            WebRequest request) {
         ExceptionDTO message = new ExceptionDTO(
                 HttpStatus.CONFLICT.value(),
                 new Date(),
@@ -56,7 +58,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ServletException.class})
     protected ResponseEntity<?> handleException(ServletException ex,
-                                                WebRequest request) {
+            WebRequest request) {
         ExceptionDTO message = new ExceptionDTO(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
@@ -68,7 +70,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({IOException.class})
     protected ResponseEntity<?> handleException(IOException ex,
-                                                WebRequest request) {
+            WebRequest request) {
         ExceptionDTO message = new ExceptionDTO(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
@@ -80,12 +82,25 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({MalformedJwtException.class})
     protected ResponseEntity<?> handleException(MalformedJwtException ex,
-                                                WebRequest request) {
+            WebRequest request) {
         ExceptionDTO message = new ExceptionDTO(
                 HttpStatus.UNAUTHORIZED.value(),
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
         return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
-                                                }
+    }
+    
+    
+    @ExceptionHandler({BadCredentialsException.class})
+    protected ResponseEntity<?> handleException(BadCredentialsException ex, WebRequest request){
+        ExceptionDTO message = new ExceptionDTO(
+                HttpStatus.UNAUTHORIZED.value(),
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+    }
+    
 }

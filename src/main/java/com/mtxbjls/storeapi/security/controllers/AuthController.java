@@ -1,6 +1,8 @@
 package com.mtxbjls.storeapi.security.controllers;
 
+import com.mtxbjls.storeapi.security.dtos.RequestLoginDTO;
 import com.mtxbjls.storeapi.security.dtos.RequestUserDTO;
+import com.mtxbjls.storeapi.security.dtos.ResponseLoginDTO;
 import com.mtxbjls.storeapi.security.dtos.ResponseUserDTO;
 import com.mtxbjls.storeapi.security.services.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +28,11 @@ public class AuthController {
         } catch (IllegalArgumentException | IllegalStateException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+    
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseLoginDTO loginUser(@RequestBody RequestLoginDTO requestLoginDTO){
+        return userService.loginUser(requestLoginDTO);
     }
 }
