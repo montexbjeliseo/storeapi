@@ -47,7 +47,11 @@ public class WebSecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(requests
-                        -> requests.requestMatchers(Endpoints.AUTH + "/**").permitAll()
+                        -> requests
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                Endpoints.AUTH + Endpoints.LOGIN,
+                                Endpoints.AUTH + Endpoints.REGISTER).permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
                                 Endpoints.CATEGORIES,

@@ -1,10 +1,7 @@
 package com.mtxbjls.storeapi.security.services.impl;
 
 import com.mtxbjls.storeapi.exceptions.UniqueConstraintViolationException;
-import com.mtxbjls.storeapi.security.dtos.RequestLoginDTO;
-import com.mtxbjls.storeapi.security.dtos.RequestUserDTO;
-import com.mtxbjls.storeapi.security.dtos.ResponseLoginDTO;
-import com.mtxbjls.storeapi.security.dtos.ResponseUserDTO;
+import com.mtxbjls.storeapi.security.dtos.*;
 import com.mtxbjls.storeapi.security.mappers.UserMapper;
 import com.mtxbjls.storeapi.security.models.Role;
 import com.mtxbjls.storeapi.security.models.User;
@@ -14,6 +11,7 @@ import com.mtxbjls.storeapi.security.services.IUserService;
 import com.mtxbjls.storeapi.security.utils.JwtTokenUtil;
 import com.mtxbjls.storeapi.utils.Constants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,5 +77,11 @@ public class UserServiceImpl implements IUserService {
         } catch (BadCredentialsException ex) {
             throw ex;
         }
+    }
+
+    @Override
+    public ResponseUserDTO getProfile() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return UserMapper.mapToResponseUserDTO((User) userDetails);
     }
 }

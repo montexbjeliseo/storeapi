@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,7 @@ public class JwtTokenUtil {
 
     public String generateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", userDetails.getAuthorities().stream().collect(Collectors.toList()).get(0));
+        claims.put("role", userDetails.getAuthorities().stream().toList().get(0));
         return generateToken(userDetails.getUsername(), claims);
     }
 
@@ -39,7 +38,7 @@ public class JwtTokenUtil {
                 .subject(subject)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 3600000))
-                .signWith(getKey())//, SignatureAlgorithm.HS512)
+                .signWith(getKey())
                 .compact();
     }
 
@@ -49,12 +48,11 @@ public class JwtTokenUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        Claims claims = Jwts.parser()
+        return Jwts.parser()
                 .verifyWith((SecretKey) getKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return claims;
     }
 
     public Boolean isTokenExpired(String token) {

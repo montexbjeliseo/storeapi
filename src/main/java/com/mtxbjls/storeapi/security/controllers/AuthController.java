@@ -1,9 +1,6 @@
 package com.mtxbjls.storeapi.security.controllers;
 
-import com.mtxbjls.storeapi.security.dtos.RequestLoginDTO;
-import com.mtxbjls.storeapi.security.dtos.RequestUserDTO;
-import com.mtxbjls.storeapi.security.dtos.ResponseLoginDTO;
-import com.mtxbjls.storeapi.security.dtos.ResponseUserDTO;
+import com.mtxbjls.storeapi.security.dtos.*;
 import com.mtxbjls.storeapi.security.services.IUserService;
 import com.mtxbjls.storeapi.utils.Constants.Endpoints;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +32,11 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseLoginDTO loginUser(@RequestBody RequestLoginDTO requestLoginDTO){
         return userService.loginUser(requestLoginDTO);
+    }
+
+    @GetMapping(Endpoints.PROFILE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseUserDTO getProfile(){
+        return userService.getProfile();
     }
 }
