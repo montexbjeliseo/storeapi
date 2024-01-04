@@ -4,12 +4,9 @@ LABEL authors="montexbjeliseo"
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN sed -i 's/\r$//' mvnw
-RUN chmod +x mvnw
-RUN ./mvnw dependency:resolve
+COPY storeapi.jar storeapi.jar
 
-COPY src ./src
+RUN chmod +x storeapi.jar
 
-CMD ["./mvnw", "spring-boot:run"]
+ENTRYPOINT ["java","-jar","storeapi.jar"]
+EXPOSE 8080
