@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN chmod +x storeapi.jar
+RUN chmod +x mvnw
 RUN ./mvnw dependency:resolve
 
 COPY src ./src
