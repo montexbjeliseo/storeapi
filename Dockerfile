@@ -4,11 +4,10 @@ LABEL authors="montexbjeliseo"
 
 WORKDIR /app
 
+COPY src ./src
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN chmod +x mvnw
-RUN ./mvnw dependency:resolve
+RUN ./mvnw clean package -DskipTests
 
-COPY src ./src
-
-CMD ["./mvnw", "spring-boot:run"]
+CMD ["java", "-jar", "target/store-api-0.0.1-SNAPSHOT.jar"]
