@@ -48,6 +48,8 @@ public class WebSecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(requests
                         -> requests
+                        .requestMatchers(Endpoints.DOCS).permitAll()
+                        .requestMatchers(Endpoints.SWAGGER_CONFIG).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST,
                                 Endpoints.AUTH + Endpoints.LOGIN,
