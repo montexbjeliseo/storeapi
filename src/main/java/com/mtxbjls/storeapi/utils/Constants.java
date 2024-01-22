@@ -50,6 +50,8 @@ public class Constants {
             public static final String CATEGORIES_DESCRIPTION = "Categories endpoints";
             public static final String PRODUCTS = "Products";
             public static final String PRODUCTS_DESCRIPTION = "Products endpoints";
+            public static final String FILES = "Files";
+            public static final String FILES_DESCRIPTION = "Files endpoints";
         }
 
         public abstract static class Operations {
@@ -66,6 +68,8 @@ public class Constants {
             public static final String PRODUCTS_GET_BY_ID = "Get a product by id";
             public static final String PRODUCTS_UPDATE = "Update a product";
             public static final String PRODUCTS_DELETE = "Delete a product";
+            public static final String FILES_UPLOAD = "Upload a file";
+            public static final String FILES_DOWNLOAD = "Download a file";
         }
 
         public abstract static class ResponseCodes {
@@ -103,6 +107,9 @@ public class Constants {
             public static final String PRODUCT_NOT_FOUND = "Product not found";
             public static final String PRODUCT_UPDATED = "Product updated";
             public static final String PRODUCT_DELETED = "Product deleted";
+            public static final String FILE_UPLOADED = "File uploaded";
+            public static final String FILE_DOWNLOADED = "File downloaded";
+            public static final String FILE_NOT_FOUND = "File not found";
         }
 
         public abstract static class Parameters {
