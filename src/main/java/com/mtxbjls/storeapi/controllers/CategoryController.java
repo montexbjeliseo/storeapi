@@ -69,8 +69,7 @@ public class CategoryController {
     }
 
     @Operation(
-            summary = Constants.Docs.Operations.CATEGORIES_GET_BY_ID,
-            security = @SecurityRequirement(name = Constants.Docs.BEARER_AUTH)
+            summary = Constants.Docs.Operations.CATEGORIES_GET_BY_ID
     )
     @GetMapping(value = Constants.PathVariables.ID, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

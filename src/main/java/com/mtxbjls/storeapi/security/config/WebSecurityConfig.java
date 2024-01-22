@@ -57,7 +57,9 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 HttpMethod.GET,
                                 Endpoints.CATEGORIES,
+                                Endpoints.CATEGORIES + PathVariables.ID,
                                 Endpoints.PRODUCTS,
+                                Endpoints.PRODUCTS + PathVariables.ID,
                                 Endpoints.FILES + PathVariables.FILENAME).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST, 

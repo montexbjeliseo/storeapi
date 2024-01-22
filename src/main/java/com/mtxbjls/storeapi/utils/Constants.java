@@ -48,6 +48,8 @@ public class Constants {
             public static final String AUTH_DESCRIPTION = "Authentication endpoints";
             public static final String CATEGORIES = "Categories";
             public static final String CATEGORIES_DESCRIPTION = "Categories endpoints";
+            public static final String PRODUCTS = "Products";
+            public static final String PRODUCTS_DESCRIPTION = "Products endpoints";
         }
 
         public abstract static class Operations {
@@ -59,6 +61,11 @@ public class Constants {
             public static final String CATEGORIES_GET_BY_ID = "Get a category by id";
             public static final String CATEGORIES_UPDATE = "Update a category";
             public static final String CATEGORIES_DELETE = "Delete a category";
+            public static final String PRODUCTS_CREATE_NEW = "Create a new product";
+            public static final String PRODUCTS_GET_ALL = "Get all products";
+            public static final String PRODUCTS_GET_BY_ID = "Get a product by id";
+            public static final String PRODUCTS_UPDATE = "Update a product";
+            public static final String PRODUCTS_DELETE = "Delete a product";
         }
 
         public abstract static class ResponseCodes {
@@ -91,6 +98,26 @@ public class Constants {
             public static final String CATEGORY_UPDATED = "Category updated";
             public static final String CATEGORY_NOT_FOUND = "Category not found";
             public static final String CATEGORY_DELETED = "Category deleted";
+            public static final String PRODUCT_CREATED = "Product created";
+            public static final String PRODUCT_RETRIEVED = "Product retrieved";
+            public static final String PRODUCT_NOT_FOUND = "Product not found";
+            public static final String PRODUCT_UPDATED = "Product updated";
+            public static final String PRODUCT_DELETED = "Product deleted";
+        }
+
+        public abstract static class Parameters {
+            public static final String TITLE = "title";
+            public static final String TITLE_DESCRIPTION = "Product title";
+            public static final String CATEGORY_ID = "category_id";
+            public static final String CATEGORY_ID_DESCRIPTION = "Category id";
+            public static final String PRICE_MIN = "price_min";
+            public static final String PRICE_MIN_DESCRIPTION = "Minimum price";
+            public static final String PRICE_MAX = "price_max";
+            public static final String PRICE_MAX_DESCRIPTION = "Maximum price";
+            public static final String OFFSET = "offset";
+            public static final String OFFSET_DESCRIPTION = "Offset";
+            public static final String LIMIT = "limit";
+            public static final String LIMIT_DESCRIPTION = "Limit";
         }
     }
 }
