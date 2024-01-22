@@ -7,6 +7,7 @@ import com.mtxbjls.storeapi.utils.Constants.Endpoints;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Tag(name = Constants.Docs.Tags.AUTH, description = Constants.Docs.Tags.AUTH_DESCRIPTION)
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = Endpoints.AUTH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = Endpoints.AUTH)
 public class AuthController {
 
     private final IUserService userService;
@@ -41,7 +42,7 @@ public class AuthController {
                 description = Constants.Docs.ResponseDescriptions.INTERNAL_SERVER_ERROR
         )
     })
-    @PostMapping(Endpoints.REGISTER)
+    @PostMapping(value = Endpoints.REGISTER, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseUserDTO createUser(@RequestBody RequestUserDTO requestUserDTO) {
         try {
@@ -66,13 +67,16 @@ public class AuthController {
                 description = Constants.Docs.ResponseDescriptions.NOT_FOUND_USER
         ),
     })
-    @PostMapping(Endpoints.LOGIN)
+    @PostMapping(value = Endpoints.LOGIN, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseLoginDTO loginUser(@RequestBody RequestLoginDTO requestLoginDTO){
         return userService.loginUser(requestLoginDTO);
     }
 
-    @Operation(summary = Constants.Docs.Operations.AUTH_GET_PROFILE)
+    @Operation(
+            summary = Constants.Docs.Operations.AUTH_GET_PROFILE,
+            security = @SecurityRequirement(name = Constants.Docs.BEARER_AUTH)
+    )
     @ApiResponses(value = {
         @ApiResponse(
                 responseCode = Constants.Docs.ResponseCodes.SUCCESS,
@@ -87,7 +91,7 @@ public class AuthController {
                 description = Constants.Docs.ResponseDescriptions.INTERNAL_SERVER_ERROR
         ),
     })
-    @GetMapping(Endpoints.PROFILE)
+    @GetMapping(value = Endpoints.PROFILE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseUserDTO getProfile(){
         return userService.getProfile();

@@ -13,7 +13,6 @@ public class Constants {
         public static final String PROFILE = "/profile";
 
         public static final String DOCS = "/api/v1/docs/**";
-
         public static final String SWAGGER_CONFIG = "/v3/api-docs/**";
 
     }
@@ -47,12 +46,19 @@ public class Constants {
         public abstract static class Tags {
             public static final String AUTH = "Authentication";
             public static final String AUTH_DESCRIPTION = "Authentication endpoints";
+            public static final String CATEGORIES = "Categories";
+            public static final String CATEGORIES_DESCRIPTION = "Categories endpoints";
         }
 
         public abstract static class Operations {
             public static final String AUTH_LOGIN = "Login a user";
             public static final String AUTH_CREATE_USER = "Create a new user";
             public static final String AUTH_GET_PROFILE = "Get profile";
+            public static final String CATEGORIES_CREATE_NEW = "Create a new category";
+            public static final String CATEGORIES_GET_ALL = "Get all categories";
+            public static final String CATEGORIES_GET_BY_ID = "Get a category by id";
+            public static final String CATEGORIES_UPDATE = "Update a category";
+            public static final String CATEGORIES_DELETE = "Delete a category";
         }
 
         public abstract static class ResponseCodes {
@@ -80,6 +86,11 @@ public class Constants {
             public static final String USER_LOGGED_IN = "User logged in";
             public static final String NOT_FOUND_USER = "User not found";
             public static final String USER_PROFILE = "User profile";
+            public static final String CATEGORY_CREATED = "Category created";
+            public static final String CATEGORIES_RETRIEVED = "Categories retrieved";
+            public static final String CATEGORY_UPDATED = "Category updated";
+            public static final String CATEGORY_NOT_FOUND = "Category not found";
+            public static final String CATEGORY_DELETED = "Category deleted";
         }
     }
 }
