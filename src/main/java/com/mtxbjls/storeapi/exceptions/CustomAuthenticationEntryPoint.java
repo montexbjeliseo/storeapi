@@ -16,6 +16,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         response.addHeader("access_denied_reason", "authentication_required");
-        response.sendError(HttpStatus.FORBIDDEN.value(), "Full Authentication Required");
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), "Full Authentication Required");
     }
 }

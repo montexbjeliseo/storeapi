@@ -67,10 +67,10 @@ public class WebSecurityConfig {
                                 HttpMethod.POST, 
                                 Endpoints.CATEGORIES,
                                 Endpoints.PRODUCTS,
-                                Endpoints.FILES + Endpoints.UPLOAD).hasRole(Roles.ADMIN)
+                                Endpoints.FILES + Endpoints.UPLOAD).hasAuthority(Roles.ADMIN)
                         .requestMatchers(
                                 HttpMethod.PATCH, 
-                                Endpoints.CATEGORIES, Endpoints.PRODUCTS).hasAuthority(Roles.ADMIN)
+                                Endpoints.CATEGORIES.concat("/**"), Endpoints.PRODUCTS + PathVariables.ID).hasAuthority(Roles.ADMIN)
                         .requestMatchers(
                                 HttpMethod.DELETE, 
                                 Endpoints.CATEGORIES, Endpoints.PRODUCTS).hasAuthority(Roles.ADMIN)

@@ -25,8 +25,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,7 +46,7 @@ class CategoryControllerTests {
 
     @Test
     @DisplayName("create a new category")
-    @WithMockUser(roles = Constants.Roles.ADMIN)
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
     void createCategory() throws Exception {
 
         when(categoryService.createCategory(any(RequestCategoryDTO.class)))
@@ -63,7 +62,7 @@ class CategoryControllerTests {
 
     @Test
     @DisplayName("Create a new category missing field: should throw a mandatory field exception and return bad request")
-    @WithMockUser(roles = Constants.Roles.ADMIN)
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
     void createCategoryMissingName() throws Exception {
         when(categoryService.createCategory(any(RequestCategoryDTO.class))).thenThrow(MandatoryFieldException.class);
 
@@ -94,7 +93,7 @@ class CategoryControllerTests {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(getRequestCategoryDTO())))
-                .andExpect(status().isForbidden())
+                .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
 
@@ -157,6 +156,70 @@ class CategoryControllerTests {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Update category: should return status code 200")
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
+    void updateCategory() throws Exception {
+        ResponseCategoryDTO expected = getSavedCategoryDTO();
+        when(categoryService.updateCategory(anyLong(), any(RequestCategoryDTO.class))).thenReturn(expected);
+
+        mockMvc.perform(patch(Constants.Endpoints.CATEGORIES.concat("/1"))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRequestCategoryDTO())))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Update category: should return status code 404")
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
+    void updateCategoryNotFound() throws Exception {
+        when(categoryService.updateCategory(anyLong(), any(RequestCategoryDTO.class)))
+                .thenThrow(new ResourceNotFoundException("Category not found"));
+
+        mockMvc.perform(patch(Constants.Endpoints.CATEGORIES + "/1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRequestCategoryDTO())))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Update category without admin rol: should return status code 403")
+    @WithMockUser(roles = Constants.Roles.CUSTOMER)
+    void updateCategoryWithoutAdminRole() throws Exception {
+        mockMvc.perform(patch(Constants.Endpoints.CATEGORIES + "/1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRequestCategoryDTO())))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Update category without authentication")
+    void updateCategoryWithoutAuthentication() throws Exception {
+        mockMvc.perform(patch(Constants.Endpoints.CATEGORIES + "/1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRequestCategoryDTO())))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Delete category: should return status code 200")
+    @WithMockUser(roles = Constants.Roles.ADMIN)
+    void deleteCategory() throws Exception {
+        mockMvc.perform(delete(Constants.Endpoints.CATEGORIES + "/1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 

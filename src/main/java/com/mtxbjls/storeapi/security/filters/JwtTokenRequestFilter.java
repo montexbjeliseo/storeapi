@@ -2,6 +2,8 @@ package com.mtxbjls.storeapi.security.filters;
 
 import com.mtxbjls.storeapi.security.services.impl.CustomUserDetailsService;
 import com.mtxbjls.storeapi.security.utils.JwtTokenUtil;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -68,9 +71,22 @@ public class JwtTokenRequestFilter extends OncePerRequestFilter {
 
             }
             filterChain.doFilter(request, response);
-        } catch (ServletException | SignatureException | IOException ex) {
+        } catch (ExpiredJwtException ex) {
+            log.error("JWT Token has expired: {}", ex.getMessage());
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("JWT Token has expired");
+        } catch (MalformedJwtException ex) {
+            log.error("Malformed JWT Token: {}", ex.getMessage());
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Malformed JWT Token");
+        } catch (ServletException | IOException ex) {
             resolver.resolveException(request, response, null, ex);
             log.error("Cannot set user authentication: {}", ex.getMessage());
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Cannot set user authentication");
         }
     }
 }
