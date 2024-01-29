@@ -3,7 +3,6 @@ package com.mtxbjls.storeapi.security.config;
 import com.mtxbjls.storeapi.exceptions.CustomAccessDeniedHandler;
 import com.mtxbjls.storeapi.exceptions.CustomAuthenticationEntryPoint;
 import com.mtxbjls.storeapi.security.filters.JwtTokenRequestFilter;
-import com.mtxbjls.storeapi.security.services.impl.CustomUserDetailsService;
 import com.mtxbjls.storeapi.utils.Constants.Endpoints;
 import com.mtxbjls.storeapi.utils.Constants.PathVariables;
 import com.mtxbjls.storeapi.utils.Constants.Roles;
@@ -16,10 +15,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,13 +29,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableGlobalAuthentication
 public class WebSecurityConfig {
 
     @Autowired
     private JwtTokenRequestFilter jwtTokenRequestFilter;
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -63,7 +65,9 @@ public class WebSecurityConfig {
                                 Endpoints.FILES + PathVariables.FILENAME).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST, 
-                                Endpoints.CATEGORIES, Endpoints.PRODUCTS, Endpoints.FILES + Endpoints.UPLOAD).hasAuthority(Roles.ADMIN)
+                                Endpoints.CATEGORIES,
+                                Endpoints.PRODUCTS,
+                                Endpoints.FILES + Endpoints.UPLOAD).hasRole(Roles.ADMIN)
                         .requestMatchers(
                                 HttpMethod.PATCH, 
                                 Endpoints.CATEGORIES, Endpoints.PRODUCTS).hasAuthority(Roles.ADMIN)
