@@ -73,7 +73,7 @@ public class WebSecurityConfig {
                                 Endpoints.CATEGORIES.concat("/**"), Endpoints.PRODUCTS + PathVariables.ID).hasAuthority(Roles.ADMIN)
                         .requestMatchers(
                                 HttpMethod.DELETE, 
-                                Endpoints.CATEGORIES, Endpoints.PRODUCTS).hasAuthority(Roles.ADMIN)
+                                Endpoints.CATEGORIES.concat("/**"), Endpoints.PRODUCTS.concat("/**")).hasAuthority(Roles.ADMIN)
         
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

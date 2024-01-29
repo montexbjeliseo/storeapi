@@ -223,6 +223,39 @@ class CategoryControllerTests {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("Delete category: should return status code 404")
+    @WithMockUser(roles = Constants.Roles.ADMIN)
+    void deleteCategoryNotFound() throws Exception {
+        when(categoryService.deleteCategory(anyLong()))
+                .thenThrow(new ResourceNotFoundException("Category not found"));
+        mockMvc.perform(delete(Constants.Endpoints.CATEGORIES + "/1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Delete category without admin rol: should return status code 403")
+    @WithMockUser(roles = Constants.Roles.CUSTOMER)
+    void deleteCategoryWithoutAdminRole() throws Exception {
+        mockMvc.perform(delete(Constants.Endpoints.CATEGORIES + "/1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Delete category without authentication")
+    void deleteCategoryWithoutAuthentication() throws Exception {
+        mockMvc.perform(delete(Constants.Endpoints.CATEGORIES + "/1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
 
     public static ResponseCategoryDTO getSavedCategoryDTO() {
         return ResponseCategoryDTO.builder()
