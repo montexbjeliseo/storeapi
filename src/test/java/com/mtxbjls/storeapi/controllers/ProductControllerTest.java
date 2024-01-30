@@ -5,9 +5,11 @@ import com.mtxbjls.storeapi.dtos.RequestProductDTO;
 import com.mtxbjls.storeapi.dtos.ResponseCategoryDTO;
 import com.mtxbjls.storeapi.dtos.ResponseProductDTO;
 import com.mtxbjls.storeapi.exceptions.MandatoryFieldException;
+import com.mtxbjls.storeapi.exceptions.NoDataProvidedException;
 import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.services.IProductService;
 import com.mtxbjls.storeapi.utils.Constants;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -160,7 +162,7 @@ public class ProductControllerTest {
                 .andDo(print());
     }
 
-    @Disabled
+
     @Test
     @DisplayName("Update product: should return status code 200")
     @WithMockUser(authorities = Constants.Roles.ADMIN)
@@ -169,8 +171,109 @@ public class ProductControllerTest {
         when(productService.updateProduct(anyLong(), any(RequestProductDTO.class))).thenReturn(expected);
 
         mockMvc.perform(patch(Constants.Endpoints.PRODUCTS.concat("/1"))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(getRequestProductDTO())))
                 .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Update product: should return status code 404")
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
+    void updateProductNotFound() throws Exception {
+        when(productService.updateProduct(anyLong(), any(RequestProductDTO.class))).thenThrow(new ResourceNotFoundException("Product not found"));
+
+        mockMvc.perform(patch(Constants.Endpoints.PRODUCTS.concat("/1"))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRequestProductDTO())))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Update product: should return status code 400")
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
+    void updateProductBadRequest() throws Exception {
+        when(productService.updateProduct(anyLong(), any(RequestProductDTO.class))).thenThrow(new NoDataProvidedException("No data provided"));
+
+        mockMvc.perform(patch(Constants.Endpoints.PRODUCTS.concat("/1"))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRequestProductDTO())))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Update product: without admin authority: should return status code 403")
+    @WithMockUser(authorities = Constants.Roles.CUSTOMER)
+    void updateProductWithoutAdminRole() throws Exception {
+        mockMvc.perform(patch(Constants.Endpoints.PRODUCTS.concat("/1"))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRequestProductDTO())))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Update product: without authentication")
+    void updateProductWithoutAuthentication() throws Exception {
+        mockMvc.perform(patch(Constants.Endpoints.PRODUCTS.concat("/1"))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRequestProductDTO())))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Delete product: should return status code 200")
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
+    void deleteProduct() throws Exception {
+        ResponseProductDTO expected = getSavedProductDTO();
+        when(productService.deleteProduct(anyLong())).thenReturn(expected);
+
+        mockMvc.perform(delete(Constants.Endpoints.PRODUCTS.concat("/1")))
+                .andExpect(jsonPath("$.id").value(expected.getId()))
+                .andExpect(jsonPath("$.title").value(expected.getTitle()))
+                .andExpect(jsonPath("$.description").value(expected.getDescription()))
+                .andExpect(jsonPath("$.images", containsInAnyOrder(expected.getImages())))
+                .andExpect(jsonPath("$.price").value(expected.getPrice()))
+                .andExpect(jsonPath("$.category.id").value(expected.getCategory().getId()))
+                .andExpect(jsonPath("$.category.name").value(expected.getCategory().getName()))
+                .andExpect(jsonPath("$.category.image").value(expected.getCategory().getImage()))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Delete product: should return status code 404")
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
+    void deleteProductNotFound() throws Exception {
+        when(productService.deleteProduct(anyLong())).thenThrow(new ResourceNotFoundException("Product not found"));
+
+        mockMvc.perform(delete(Constants.Endpoints.PRODUCTS.concat("/1")))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Delete product: without admin authority: should return status code 403")
+    @WithMockUser(authorities = Constants.Roles.CUSTOMER)
+    void deleteProductWithoutAdminRole() throws Exception {
+        mockMvc.perform(delete(Constants.Endpoints.PRODUCTS.concat("/1")))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Delete product: without authentication")
+    void deleteProductWithoutAuthentication() throws Exception {
+        mockMvc.perform(delete(Constants.Endpoints.PRODUCTS.concat("/1")))
+                .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
 

@@ -3,6 +3,7 @@ package com.mtxbjls.storeapi.services.impl;
 import com.mtxbjls.storeapi.dtos.RequestProductDTO;
 import com.mtxbjls.storeapi.dtos.ResponseProductDTO;
 import com.mtxbjls.storeapi.exceptions.MandatoryFieldException;
+import com.mtxbjls.storeapi.exceptions.NoDataProvidedException;
 import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.mappers.ProductMapper;
 import com.mtxbjls.storeapi.models.Category;
@@ -86,7 +87,7 @@ public class ProductServiceImpl implements IProductService {
         }
 
         if (requestProductDTO == null) {
-            throw new RuntimeException("No data provided");
+            throw new NoDataProvidedException("No data provided");
         }
 
         Product updatedProduct = ProductMapper.updateProduct(product.get(), requestProductDTO);
