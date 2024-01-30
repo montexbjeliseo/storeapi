@@ -191,7 +191,7 @@ class CategoryControllerTests {
 
     @Test
     @DisplayName("Update category without admin rol: should return status code 403")
-    @WithMockUser(roles = Constants.Roles.CUSTOMER)
+    @WithMockUser(authorities = Constants.Roles.CUSTOMER)
     void updateCategoryWithoutAdminRole() throws Exception {
         mockMvc.perform(patch(Constants.Endpoints.CATEGORIES + "/1")
                         .accept(MediaType.APPLICATION_JSON)
@@ -214,18 +214,22 @@ class CategoryControllerTests {
 
     @Test
     @DisplayName("Delete category: should return status code 200")
-    @WithMockUser(roles = Constants.Roles.ADMIN)
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
     void deleteCategory() throws Exception {
-        mockMvc.perform(delete(Constants.Endpoints.CATEGORIES + "/1")
+
+        when(categoryService.deleteCategory(anyLong())).thenReturn(getSavedCategoryDTO());
+
+        mockMvc.perform(delete(Constants.Endpoints.CATEGORIES.concat("/1"))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(getSavedCategoryDTO().getId()))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
     @DisplayName("Delete category: should return status code 404")
-    @WithMockUser(roles = Constants.Roles.ADMIN)
+    @WithMockUser(authorities = Constants.Roles.ADMIN)
     void deleteCategoryNotFound() throws Exception {
         when(categoryService.deleteCategory(anyLong()))
                 .thenThrow(new ResourceNotFoundException("Category not found"));
@@ -238,7 +242,7 @@ class CategoryControllerTests {
 
     @Test
     @DisplayName("Delete category without admin rol: should return status code 403")
-    @WithMockUser(roles = Constants.Roles.CUSTOMER)
+    @WithMockUser(authorities = Constants.Roles.CUSTOMER)
     void deleteCategoryWithoutAdminRole() throws Exception {
         mockMvc.perform(delete(Constants.Endpoints.CATEGORIES + "/1")
                         .accept(MediaType.APPLICATION_JSON)
