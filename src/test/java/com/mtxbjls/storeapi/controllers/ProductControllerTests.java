@@ -9,8 +9,6 @@ import com.mtxbjls.storeapi.exceptions.NoDataProvidedException;
 import com.mtxbjls.storeapi.exceptions.ResourceNotFoundException;
 import com.mtxbjls.storeapi.services.IProductService;
 import com.mtxbjls.storeapi.utils.Constants;
-import org.apache.coyote.BadRequestException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProductControllerTest {
+public class ProductControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
