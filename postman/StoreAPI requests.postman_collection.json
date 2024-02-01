@@ -1,0 +1,431 @@
+{
+	"info": {
+		"_postman_id": "8f47ff50-1420-4155-a67b-e3d6973c2efa",
+		"name": "StoreAPI requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21997231"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Palau\",\r\n    \"email\": \"johnpalau@mail.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"johnpalau@mail.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjp7ImF1dGhvcml0eSI6IkNVU1RPTUVSIn0sInN1YiI6ImpvaG5wYWxhdUBtYWlsLmNvbSIsImlhdCI6MTcwNjU3ODI4MSwiZXhwIjoxNzA2NTgxODgxfQ.1D6z4735hXBDFbg8HgymVIgcPS-2_VaAnSNybhzcd6_7-j1xLXQdcPs2tjnlIEdQrkSqA1mMGPlI4JqD0E1phg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10000/api/v1/auth/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get all categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10000/api/v1/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10000/api/v1/categories/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjp7ImF1dGhvcml0eSI6IkFETUlOIn0sInN1YiI6ImFkbWluQGFkbWFpbC5jb20iLCJpYXQiOjE3MDY1Nzg4ODcsImV4cCI6MTcwNjU4MjQ4N30.N5doYc6AjNdwQD9iOJ7LWSrMHnJz9kx4yqhkFLZKWODT49ct5aRvBnYKRNUm518Mz337Xh1RlNZAEF6stnhpEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"My new category\",\r\n    \"image\": \"category1.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/api/v1/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjp7ImF1dGhvcml0eSI6IkFETUlOIn0sInN1YiI6ImFkbWluQGFkbWFpbC5jb20iLCJpYXQiOjE3MDY1Nzg4ODcsImV4cCI6MTcwNjU4MjQ4N30.N5doYc6AjNdwQD9iOJ7LWSrMHnJz9kx4yqhkFLZKWODT49ct5aRvBnYKRNUm518Mz337Xh1RlNZAEF6stnhpEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Clothes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/api/v1/categories/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjp7ImF1dGhvcml0eSI6IkFETUlOIn0sInN1YiI6ImFkbWluQGFkbWFpbC5jb20iLCJpYXQiOjE3MDY1Nzg4ODcsImV4cCI6MTcwNjU4MjQ4N30.N5doYc6AjNdwQD9iOJ7LWSrMHnJz9kx4yqhkFLZKWODT49ct5aRvBnYKRNUm518Mz337Xh1RlNZAEF6stnhpEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10000/api/v1/categories/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"categories",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10000/api/v1/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10000/api/v1/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjp7ImF1dGhvcml0eSI6IkFETUlOIn0sInN1YiI6ImFkbWluQGFkbWFpbC5jb20iLCJpYXQiOjE3MDY1Nzg4ODcsImV4cCI6MTcwNjU4MjQ4N30.N5doYc6AjNdwQD9iOJ7LWSrMHnJz9kx4yqhkFLZKWODT49ct5aRvBnYKRNUm518Mz337Xh1RlNZAEF6stnhpEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"My new product\",\r\n    \"description\": \"My new product description\",\r\n    \"price\": 1000.00,\r\n    \"category_id\": 1,\r\n    \"images\": [\"newProduct1.png\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/api/v1/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjp7ImF1dGhvcml0eSI6IkFETUlOIn0sInN1YiI6ImFkbWluQGFkbWFpbC5jb20iLCJpYXQiOjE3MDY1Nzg4ODcsImV4cCI6MTcwNjU4MjQ4N30.N5doYc6AjNdwQD9iOJ7LWSrMHnJz9kx4yqhkFLZKWODT49ct5aRvBnYKRNUm518Mz337Xh1RlNZAEF6stnhpEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Blue jacket\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:10000/api/v1/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjp7ImF1dGhvcml0eSI6IkFETUlOIn0sInN1YiI6ImFkbWluQGFkbWFpbC5jb20iLCJpYXQiOjE3MDY1Nzg4ODcsImV4cCI6MTcwNjU4MjQ4N30.N5doYc6AjNdwQD9iOJ7LWSrMHnJz9kx4yqhkFLZKWODT49ct5aRvBnYKRNUm518Mz337Xh1RlNZAEF6stnhpEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10000/api/v1/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10000",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
