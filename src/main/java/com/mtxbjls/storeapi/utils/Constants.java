@@ -2,18 +2,19 @@ package com.mtxbjls.storeapi.utils;
 
 public class Constants {
     public abstract static class Endpoints {
-        public static final String CATEGORIES = "/api/v1/categories";
-        public static final String PRODUCTS = "/api/v1/products";
-        public static final String FILES = "/api/v1/files";
+        public static final String CATEGORIES = "/categories";
+        public static final String PRODUCTS = "/products";
+        public static final String FILES = "/files";
         public static final String UPLOAD = "/upload";
         
-        public static final String AUTH = "/api/v1/auth";        
+        public static final String AUTH = "/auth";
         public static final String REGISTER = "/register";
         public static final String LOGIN = "/login";
         public static final String PROFILE = "/profile";
 
-        public static final String DOCS = "/api/v1/docs/**";
+        public static final String DOCS = "/docs/**";
         public static final String SWAGGER_CONFIG = "/v3/api-docs/**";
+        public static final String SWAGGER_INDEX = "/swagger-ui/**";
 
     }
 

@@ -5,10 +5,15 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(info = @Info(title = Constants.Docs.TITLE, version = Constants.Docs.VERSION, description = Constants.Docs.DESCRIPTION))
+@OpenAPIDefinition(info = @Info(title = Constants.Docs.TITLE, version = Constants.Docs.VERSION, description = Constants.Docs.DESCRIPTION),
+        servers = @Server(
+                url = "/api/v1",
+                description = "Default server URL"
+        ))
 @SecurityScheme(
     name = Constants.Docs.BEARER_AUTH,
     type = SecuritySchemeType.HTTP,

@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests
                         -> requests
                         .requestMatchers(Endpoints.DOCS).permitAll()
-                        .requestMatchers(Endpoints.SWAGGER_CONFIG).permitAll()
+                        .requestMatchers(Endpoints.SWAGGER_CONFIG, Endpoints.SWAGGER_INDEX).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST,
                                 Endpoints.AUTH + Endpoints.LOGIN,
